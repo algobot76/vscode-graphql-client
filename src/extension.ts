@@ -20,6 +20,7 @@ export function activate(context: ExtensionContext) {
 			return;
 		}
 
+		// Grab text selected by user
 		let selectedText: string;
 		if (editor.selection.isEmpty) {
 			selectedText = editor.document.getText();
