@@ -15,10 +15,23 @@ export function activate(context: ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	let disposable = commands.registerCommand('graphql-client.request', () => {
 		// The code you place here will be executed every time your command is executed
+		let editor = window.activeTextEditor;
+		if (!editor || !editor.document) {
+			return;
+		}
 
+		let selectedText: string;
+		if (editor.selection.isEmpty) {
+			selectedText = editor.document.getText();
+		} else {
+			selectedText = editor.document.getText(editor.selection);
+		}
 
-		// Display a message box to the user
-		window.showInformationMessage('Hello World!');
+		if (selectedText === '') {
+			return;
+		}
+
+		// window.showInformationMessage(selectedText); // for debug purpose only
 	});
 
 	context.subscriptions.push(disposable);
