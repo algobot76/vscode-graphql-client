@@ -16,7 +16,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
+				"command": "graphql-client.request",
 				"title": "Hello World"
 			}
 		]
