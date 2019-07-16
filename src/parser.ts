@@ -2,7 +2,7 @@ import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
 
 export class Parser {
-    public static parse(text: String): GraphqlRequest | undefined {
+    public static parse(text: String): GraphqlRequest {
         // Break text into multiple lines
         let lines: string[] = text.split(EOL);
         let idx = 0;
@@ -20,7 +20,7 @@ export class Parser {
         }
         lines = lines.splice(idx + 1);
         if (lines.length === 0) {
-            return undefined;
+            throw Error('Selected text cannot be empty');
         }
     }
 }
