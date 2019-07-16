@@ -1,0 +1,20 @@
+{
+  "tabWidth": 4,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ".prettierrc",
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+}
