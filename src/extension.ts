@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { commands, window, ExtensionContext } from 'vscode';
+import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
+import { getWebviewContent } from './utils/panel';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -33,6 +34,31 @@ export function activate(context: ExtensionContext) {
 		}
 
 		// window.showInformationMessage(selectedText); // for debug purpose only
+
+		let panel = window.createWebviewPanel(
+			'graphqlResponse',
+			'Graphql Response',
+			ViewColumn.Two
+		);
+		let fakeResponse = {
+			"data": {
+				"hero": {
+					"name": "R2-D2",
+					"friends": [
+						{
+							"name": "Luke Skywalker"
+						},
+						{
+							"name": "Han Solo"
+						},
+						{
+							"name": "Leia Organa"
+						}
+					]
+				}
+			}
+		};
+		panel.webview.html = getWebviewContent(fakeResponse);
 	});
 
 	context.subscriptions.push(disposable);
