@@ -1,5 +1,7 @@
 import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
+import { GraphQLError } from 'graphql';
+var parser = require('graphql/language/parser');
 
 export class Parser {
     public static parse(text: String): GraphqlRequest {
@@ -33,9 +35,11 @@ export class Parser {
 
         // Get Query from Request
 
+        // ['{', '  hero', '}']
+        
         let query;
         try {
-            query = this.getQuery()
+            query = this.getQuery(lines.slice(1));
         }
     }
 
@@ -55,21 +59,47 @@ export class Parser {
         return line;
     }
 
-    private static getQuery(query: any) {
+    // POST mushroom.egg
+    // {
+    //     k {}
+    // }
+
+    // API: mushroom.egg
+    // QUERY: { k {} }
+    private static getQuery(lines: string[]) : string {
         // `query` has the format of `Graphql Query`
         //  return the query from the Graphql Request
         //  TODO
+        if (lines.length === 0) {
+            throw new Error('Query must be specified');
+        }
+        // Concatenate lines
+        let query = lines.join(EOL);
+        // Use builtin parser to parse query
+        try {
+            parser.parse(query);
+        } catch(err) {
+            // Be  A N G E R Y (perhaps depending on error type)
+            if (err instanceof GraphQLError) {
+                throw err;
+            } else {
+                throw err;
+            }
+        }
+        return query;
     }
 
     private static ValidateQuery (query: any) {
         // `query` has to be validated to ensure it is a correct query
         // `appropriate error handling should be implemented for different validation 
         //  several helpers will be needed as we validate it for diffrent secnarios
+        // TODO
     }
 
     private static ValidateMutationQuery (query:any) {
         // `mutation` has to be validated to ensure it is a correct query
         // `appropriate eroor handling should be implemented for different validation
         //  several helpers will be needed as we validate it for different secnarios
+        // TODO
     }
 }
