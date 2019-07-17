@@ -1,7 +1,7 @@
 import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
 import { GraphQLError } from 'graphql';
-var parser = require('graphql/language/parser');
+import { parse as gplParse} from 'graphql/language';
 
 export class Parser {
     public static parse(text: String): GraphqlRequest {
@@ -40,7 +40,11 @@ export class Parser {
         let query;
         try {
             query = this.getQuery(lines.slice(1));
+        } catch (err) {
+            throw new Error(err.message);
         }
+
+        return new GraphqlRequest(api, query);
     }
 
     private static getApi(line: string): string {
@@ -77,7 +81,7 @@ export class Parser {
         let query = lines.join(EOL);
         // Use builtin parser to parse query
         try {
-            parser.parse(query);
+            gplParse(query);
         } catch(err) {
             // Be  A N G E R Y (perhaps depending on error type)
             if (err instanceof GraphQLError) {

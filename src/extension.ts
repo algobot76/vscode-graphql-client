@@ -3,6 +3,8 @@
 import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
 import { getWebviewContent } from './utils/panel';
 
+import {Parser} from './parser';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
@@ -33,6 +35,14 @@ export function activate(context: ExtensionContext) {
 			return;
 		}
 
+		let query;
+		try {
+			query = Parser.parse(selectedText);
+			console.log(query);
+		} catch (err) {
+			console.log('AHHHHHHHHHHHHHH THERE WAS AN ERROR');
+			console.log(err.message);
+		}
 		// window.showInformationMessage(selectedText); // for debug purpose only
 
 		// Create a panel to display the response
