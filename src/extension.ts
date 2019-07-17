@@ -35,11 +35,14 @@ export function activate(context: ExtensionContext) {
 
 		// window.showInformationMessage(selectedText); // for debug purpose only
 
+		// Create a panel to display the response
 		let panel = window.createWebviewPanel(
 			'graphqlResponse',
 			'Graphql Response',
 			ViewColumn.Two
 		);
+
+		// for debug purpose only
 		let fakeResponse = {
 			"data": {
 				"hero": {
@@ -58,6 +61,7 @@ export function activate(context: ExtensionContext) {
 				}
 			}
 		};
+
 		panel.webview.html = getWebviewContent(fakeResponse);
 	});
 
