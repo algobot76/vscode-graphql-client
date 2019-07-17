@@ -8,6 +8,7 @@ export function getWebviewContent(response: any): string {
         start: 1
     });
 
+    // TODO: Replace the internal stylesheet with an external stylesheet
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
