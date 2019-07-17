@@ -1,5 +1,6 @@
 import * as hljs from 'highlight.js';
 import * as codeHighlightLinenums from 'code-highlight-linenums';
+import {EOL} from 'os';
 
 export function getWebviewContent(response: any): string {
     let formattedCode = codeHighlightLinenums(JSON.stringify(response, null, 2), {
@@ -282,10 +283,7 @@ export function getWebviewContent(response: any): string {
         <title>GraphQL Response</title>
     </head>
     <body>
-        <pre>
-            <code>
-                ${formattedCode}
-            </code>
+        <pre><code>${formattedCode}</code>
         </pre>
     </body>
     </html>`;
