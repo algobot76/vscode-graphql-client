@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
 import { getWebviewContent } from './utils/panel';
+import * as nearley from 'nearley';
+import * as textParser from './utils/textParser';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -62,7 +64,15 @@ export function activate(context: ExtensionContext) {
 			}
 		};
 
-		panel.webview.html = getWebviewContent(fakeResponse);
+
+		let nearleyParser = new nearley.Parser(nearley.Grammar.fromCompiled(textParser));
+		try {
+			nearleyParser.feed(selectedText);
+		} catch(err) {
+			window.showInformationMessage(err.message);
+		}
+
+		panel.webview.html = getWebviewContent(nearleyParser.results[0]);
 	});
 
 	context.subscriptions.push(disposable);
