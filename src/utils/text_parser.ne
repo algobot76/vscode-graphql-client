@@ -1,3 +1,6 @@
+# Make use you have already installed nearley as a global package.
+# If not, run npm install -g nearley
+# Don't forget to run nearleyc text_parser.ne -o textParser.ts after you modify this file!!!
 @preprocessor typescript
 @{%
 function flatten(input) {
