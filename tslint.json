@@ -9,5 +9,8 @@
     "triple-equals": true
   },
   "extends": ["tslint-config-prettier"],
-  "defaultSeverity": "warning"
+  "defaultSeverity": "warning",
+  "linterOptions": {
+    "exclude": ["src/utils/textParser.ts"]
+  }
 }
