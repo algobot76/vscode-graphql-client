@@ -1,3 +1,4 @@
+@preprocessor typescript
 @{%
 function flatten(input) {
   const stack = [...input];
