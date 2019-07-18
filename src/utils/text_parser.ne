@@ -26,9 +26,14 @@ text -> space:* post_request (space|new_line):* query (space|new_line):*
 } %}
 query -> "{" new_line (letter|space|brace|new_line):+ new_line "}"
 post_request -> "post"i space:+ url
-url -> word "." word "." word
+url -> protocol domain (null|path) fragment
+domain -> (word "."):+ word "/"
+path -> (fragment "/"):+
+fragment -> (letter|digit):+
+protocol -> ("http"|"https") "://"
 brace -> "{"|"}"
 new_line -> "\n"
 space -> " "
 word -> letter:+
 letter -> [a-zA-z]
+digit -> [0-9]
