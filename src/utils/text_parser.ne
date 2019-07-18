@@ -27,7 +27,7 @@ function(data) {
 }
 %}
 query -> query_prompt:? "{" new_line (letter|space|brace|new_line):+ new_line "}"
-query_prompt -> "query" (space word):? (space:* "(" query_variable space:* ":" space:* variable space:* ")" space:*):? space:*
+query_prompt -> "query" (space word):? (space:* "(" space:* query_variable space:* ":" space:* variable space:* ")" space:*):? space:*
 query_variable -> "$" variable
 post_request -> "post"i space:+ url
 url -> protocol domain (null|path) fragment
@@ -38,7 +38,8 @@ protocol -> ("http"|"https") "://"
 brace -> "{"|"}"
 new_line -> "\n"
 space -> " "
-variable -> letter|word|(word ("_"|null)):+
+variable -> piece|(piece ("_"|null)):+
+piece -> (letter):+ (digit|letter):*
 word -> letter:+
 letter -> [a-zA-z]
 digit -> [0-9]
