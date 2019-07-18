@@ -1,6 +1,6 @@
 # Make use you have already installed nearley as a global package.
-# If not, run npm install -g nearley
-# Don't forget to run nearleyc text_parser.ne -o textParser.ts after you modify this file!!!
+# If not, run `npm install -g nearley`.
+# Don't forget to run `nearleyc text_parser.ne -o textParser.ts` after you modify this file!!!
 @preprocessor typescript
 @{%
 function flatten(input) {
@@ -17,7 +17,9 @@ function flatten(input) {
   return res.reverse();
 }
 %}
-text -> (space|new_line):* post_request (space|new_line):* query (space|new_line):*
+
+# Text
+text -> empty post_request empty query empty
 {%
 function(data) {
 	return {
@@ -26,25 +28,37 @@ function(data) {
 	}
 }
 %}
+
+# Query
 query -> query_prompt query_body | query_body
-query_body -> space:* "{" new_line query_content:+ new_line "}"
-query_content -> letter|space|brace|new_line|"("|")"|"$"|":"
-query_prompt -> "query" (space:+ word):? spaces ("(" spaces query_variable spaces (":" spaces query_argument spaces ):? ")"):?
-query_variable -> "$" variable
-query_argument -> variable (space:* "=" space:* default_value):?
-default_value -> number | variable
+query_body -> _ l_brace new_line query_content:+ new_line r_brace
+query_content -> letter|space|brace|paren|new_line|"$"|":"
+query_prompt -> "query" (space:+ word):? _ (l_paren _ query_variable _ (":" _ query_argument _ ):? r_paren):?
+query_variable -> "$" js_variable
+query_argument -> js_variable (_ "=" _ default_value):?
+default_value -> number | js_variable
+
+# URL
 post_request -> "post"i space:+ url
 url -> protocol domain (null|path) fragment
 domain -> (word "."):+ word "/"
 path -> (fragment "/"):+
 fragment -> (letter|digit):+
 protocol -> ("http"|"https") "://"
-brace -> "{"|"}"
+
+# Primitives
+paren -> l_paren|r_paren
+l_paren -> "("
+r_paren -> ")"
+brace -> l_brace|r_brace
+l_brace -> "{"
+r_brace -> "}"
 new_line -> "\n"
-spaces -> space:*
+empty -> (space|new_line):*
+_ -> space:*
 space -> " "
-variable -> piece|(piece ("_"|null)):+
-piece -> (letter):+ (digit|letter):*
+js_variable -> js_variable_part|(js_variable_part ("_"|null)):+
+js_variable_part -> (letter):+ (digit|letter):*
 word -> letter:+
 number -> integer | float
 float -> integer "." integer
