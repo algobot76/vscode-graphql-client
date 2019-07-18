@@ -37,6 +37,7 @@ protocol -> ("http"|"https") "://"
 brace -> "{"|"}"
 new_line -> "\n"
 space -> " "
+variable -> letter|word|(word ("_"|null)):+
 word -> letter:+
 letter -> [a-zA-z]
 digit -> [0-9]
