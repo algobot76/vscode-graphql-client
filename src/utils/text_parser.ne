@@ -41,5 +41,8 @@ space -> " "
 variable -> piece|(piece ("_"|null)):+
 piece -> (letter):+ (digit|letter):*
 word -> letter:+
+number -> integer | float
+float -> integer "." integer
+integer -> digit:+
 letter -> [a-zA-z]
 digit -> [0-9]
