@@ -18,13 +18,16 @@ function flatten(input) {
 }
 %}
 text -> space:* post_request (space|new_line):* query (space|new_line):*
-{% function(data) {
+{%
+function(data) {
 	return {
 		url: flatten(data[1][2]).join(''),
 		query: flatten(data[3]).join('')
 	}
-} %}
-query -> "{" new_line (letter|space|brace|new_line):+ new_line "}"
+}
+%}
+query -> query_prompt:? "{" new_line (letter|space|brace|new_line):+ new_line "}"
+query_prompt -> "query" (space word):? space:*
 post_request -> "post"i space:+ url
 url -> protocol domain (null|path) fragment
 domain -> (word "."):+ word "/"
