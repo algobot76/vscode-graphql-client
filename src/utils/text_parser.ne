@@ -26,7 +26,9 @@ function(data) {
 	}
 }
 %}
-query -> query_prompt:? space:* "{" new_line (letter|space|brace|new_line):+ new_line "}"
+query -> query_prompt query_body | query_body
+query_body -> space:* "{" new_line query_content:+ new_line "}"
+query_content -> letter|space|brace|new_line|"("|")"|"$"|":"
 query_prompt -> "query" (space:+ word):? spaces ("(" spaces query_variable spaces (":" spaces query_argument spaces ):? ")"):?
 query_variable -> "$" variable
 query_argument -> variable (space:* "=" space:* default_value):?
