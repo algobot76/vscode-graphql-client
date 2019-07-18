@@ -26,8 +26,8 @@ function(data) {
 	}
 }
 %}
-query -> query_prompt:? "{" new_line (letter|space|brace|new_line):+ new_line "}"
-query_prompt -> "query" (space word):? (space:* "(" space:* query_variable space:* ":" space:* query_argument space:* ")" space:*):? space:*
+query -> query_prompt:? space:* "{" new_line (letter|space|brace|new_line):+ new_line "}"
+query_prompt -> "query" (space:+ word):? spaces ("(" spaces query_variable spaces (":" spaces query_argument spaces ):? ")"):?
 query_variable -> "$" variable
 query_argument -> variable (space:* "=" space:* default_value):?
 default_value -> number | variable
@@ -39,6 +39,7 @@ fragment -> (letter|digit):+
 protocol -> ("http"|"https") "://"
 brace -> "{"|"}"
 new_line -> "\n"
+spaces -> space:*
 space -> " "
 variable -> piece|(piece ("_"|null)):+
 piece -> (letter):+ (digit|letter):*
