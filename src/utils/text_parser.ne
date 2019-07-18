@@ -27,8 +27,10 @@ function(data) {
 }
 %}
 query -> query_prompt:? "{" new_line (letter|space|brace|new_line):+ new_line "}"
-query_prompt -> "query" (space word):? (space:* "(" space:* query_variable space:* ":" space:* variable space:* ")" space:*):? space:*
+query_prompt -> "query" (space word):? (space:* "(" space:* query_variable space:* ":" space:* query_argument space:* ")" space:*):? space:*
 query_variable -> "$" variable
+query_argument -> variable (space:* "=" space:* default_value):?
+default_value -> number | variable
 post_request -> "post"i space:+ url
 url -> protocol domain (null|path) fragment
 domain -> (word "."):+ word "/"
