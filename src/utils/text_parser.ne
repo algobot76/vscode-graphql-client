@@ -17,7 +17,7 @@ function flatten(input) {
   return res.reverse();
 }
 %}
-text -> space:* post_request (space|new_line):* query (space|new_line):*
+text -> (space|new_line):* post_request (space|new_line):* query (space|new_line):*
 {%
 function(data) {
 	return {

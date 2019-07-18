@@ -40,7 +40,9 @@ export var Lexer: Lexer | undefined = undefined;
 
 export var ParserRules: NearleyRule[] = [
     {"name": "text$ebnf$1", "symbols": []},
-    {"name": "text$ebnf$1", "symbols": ["text$ebnf$1", "space"], "postprocess": (d) => d[0].concat([d[1]])},
+    {"name": "text$ebnf$1$subexpression$1", "symbols": ["space"]},
+    {"name": "text$ebnf$1$subexpression$1", "symbols": ["new_line"]},
+    {"name": "text$ebnf$1", "symbols": ["text$ebnf$1", "text$ebnf$1$subexpression$1"], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "text$ebnf$2", "symbols": []},
     {"name": "text$ebnf$2$subexpression$1", "symbols": ["space"]},
     {"name": "text$ebnf$2$subexpression$1", "symbols": ["new_line"]},
