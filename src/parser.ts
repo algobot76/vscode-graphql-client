@@ -30,6 +30,13 @@ export class Parser {
         } catch (err) {
             throw new Error(err.message);
         }
+
+        // Get Query from Request
+
+        let query;
+        try {
+            query = this.getQuery()
+        }
     }
 
     private static getApi(line: string): string {
@@ -46,5 +53,23 @@ export class Parser {
             throw new Error('API must be specified');
         }
         return line;
+    }
+
+    private static getQuery(query: any) {
+        // `query` has the format of `Graphql Query`
+        //  return the query from the Graphql Request
+        //  TODO
+    }
+
+    private static ValidateQuery (query: any) {
+        // `query` has to be validated to ensure it is a correct query
+        // `appropriate error handling should be implemented for different validation 
+        //  several helpers will be needed as we validate it for diffrent secnarios
+    }
+
+    private static ValidateMutationQuery (query:any) {
+        // `mutation` has to be validated to ensure it is a correct query
+        // `appropriate eroor handling should be implemented for different validation
+        //  several helpers will be needed as we validate it for different secnarios
     }
 }
