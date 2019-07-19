@@ -1,12 +1,16 @@
 import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
 import { GraphQLError } from 'graphql';
-import { parse as gplParse} from 'graphql/language';
+import { parse as gqlParse} from 'graphql/language';
 
 export class Parser {
     public static parse(text: String): GraphqlRequest {
         // Break text into multiple lines
         let lines: string[] = text.split(EOL);
+        console.log("Lines before filter: ", lines);
+        lines = lines.map(line => line.trim()).filter(line => line.length > 0);
+        console.log("Lines after filter: ", lines);
+        /*
         let idx = 0;
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].trim() === '') {
@@ -21,6 +25,7 @@ export class Parser {
             }
         }
         lines = lines.splice(idx + 1);
+        */
         if (lines.length === 0) {
             throw Error('Selected text cannot be empty');
         }
@@ -33,10 +38,7 @@ export class Parser {
             throw new Error(err.message);
         }
 
-        // Get Query from Request
-
-        // ['{', '  hero', '}']
-        
+        // Get Query from Request        
         let query;
         try {
             query = this.getQuery(lines.slice(1));
@@ -62,18 +64,10 @@ export class Parser {
         }
         return line;
     }
-
-    // POST mushroom.egg
-    // {
-    //     k {}
-    // }
-
-    // API: mushroom.egg
-    // QUERY: { k {} }
+    
     private static getQuery(lines: string[]) : string {
         // `query` has the format of `Graphql Query`
         //  return the query from the Graphql Request
-        //  TODO
         if (lines.length === 0) {
             throw new Error('Query must be specified');
         }
@@ -81,7 +75,7 @@ export class Parser {
         let query = lines.join(EOL);
         // Use builtin parser to parse query
         try {
-            gplParse(query);
+            gqlParse(query);
         } catch(err) {
             // Be  A N G E R Y (perhaps depending on error type)
             if (err instanceof GraphQLError) {
