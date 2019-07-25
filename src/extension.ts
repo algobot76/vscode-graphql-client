@@ -2,8 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
 import { getWebviewContent } from './utils/panel';
-import * as nearley from 'nearley';
-import * as textParser from './utils/textParser';
 
 import { Parser } from './parser';
 
