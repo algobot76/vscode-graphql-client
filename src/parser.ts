@@ -7,27 +7,9 @@ export class Parser {
     public static parse(text: String): GraphqlRequest {
         // Break text into multiple lines
         let lines: string[] = text.split(EOL);
-        console.log("Lines before filter: ", lines);
         lines = lines.map(line => line.trim()).filter(line => line.length > 0);
-        console.log("Lines after filter: ", lines);
-        /*
-        let idx = 0;
-        for (let i = 0; i < lines.length; i++) {
-            if (lines[i].trim() === '') {
-                if (i === lines.length - 1) {
-                    idx = i;
-                    break;
-                }
-                if (lines[i + 1] !== '') {
-                    idx = i;
-                    break;
-                }
-            }
-        }
-        lines = lines.splice(idx + 1);
-        */
         if (lines.length === 0) {
-            throw Error('Selected text cannot be empty');
+            throw new Error('Selected text cannot be empty');
         }
 
         // Get api from text
@@ -38,7 +20,7 @@ export class Parser {
             throw new Error(err.message);
         }
 
-        // Get Query from Request        
+        // Get Query from Request
         let query;
         try {
             query = this.getQuery(lines.slice(1));
@@ -64,7 +46,7 @@ export class Parser {
         }
         return line;
     }
-    
+
     private static getQuery(lines: string[]) : string {
         // `query` has the format of `Graphql Query`
         //  return the query from the Graphql Request
@@ -89,7 +71,7 @@ export class Parser {
 
     private static ValidateQuery (query: any) {
         // `query` has to be validated to ensure it is a correct query
-        // `appropriate error handling should be implemented for different validation 
+        // `appropriate error handling should be implemented for different validation
         //  several helpers will be needed as we validate it for diffrent secnarios
         // TODO
     }
