@@ -53,9 +53,7 @@ export class Parser {
         if (lines.length === 0) {
             throw new Error('Query must be specified');
         }
-        // Concatenate lines
         let query = lines.join(EOL);
-        // Use builtin parser to parse query
         try {
             gqlParse(query);
         } catch(err) {
@@ -67,19 +65,5 @@ export class Parser {
             }
         }
         return query;
-    }
-
-    private static ValidateQuery (query: any) {
-        // `query` has to be validated to ensure it is a correct query
-        // `appropriate error handling should be implemented for different validation
-        //  several helpers will be needed as we validate it for diffrent secnarios
-        // TODO
-    }
-
-    private static ValidateMutationQuery (query:any) {
-        // `mutation` has to be validated to ensure it is a correct query
-        // `appropriate eroor handling should be implemented for different validation
-        //  several helpers will be needed as we validate it for different secnarios
-        // TODO
     }
 }
