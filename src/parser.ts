@@ -1,26 +1,15 @@
 import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
+import { GraphQLError } from 'graphql';
+import { parse as gqlParse} from 'graphql/language';
 
 export class Parser {
     public static parse(text: String): GraphqlRequest {
         // Break text into multiple lines
         let lines: string[] = text.split(EOL);
-        let idx = 0;
-        for (let i = 0; i < lines.length; i++) {
-            if (lines[i].trim() === '') {
-                if (i === lines.length - 1) {
-                    idx = i;
-                    break;
-                }
-                if (lines[i + 1] !== '') {
-                    idx = i;
-                    break;
-                }
-            }
-        }
-        lines = lines.splice(idx + 1);
+        lines = lines.map(line => line.trim()).filter(line => line.length > 0);
         if (lines.length === 0) {
-            throw Error('Selected text cannot be empty');
+            throw new Error('Selected text cannot be empty');
         }
 
         // Get api from text
@@ -30,6 +19,16 @@ export class Parser {
         } catch (err) {
             throw new Error(err.message);
         }
+
+        // Get Query from Request
+        let query;
+        try {
+            query = this.getQuery(lines.slice(1));
+        } catch (err) {
+            throw new Error(err.message);
+        }
+
+        return new GraphqlRequest(api, query);
     }
 
     private static getApi(line: string): string {
@@ -46,5 +45,25 @@ export class Parser {
             throw new Error('API must be specified');
         }
         return line;
+    }
+
+    private static getQuery(lines: string[]) : string {
+        // `query` has the format of `Graphql Query`
+        //  return the query from the Graphql Request
+        if (lines.length === 0) {
+            throw new Error('Query must be specified');
+        }
+        let query = lines.join(EOL);
+        try {
+            gqlParse(query);
+        } catch(err) {
+            // Be  A N G E R Y (perhaps depending on error type)
+            if (err instanceof GraphQLError) {
+                throw err;
+            } else {
+                throw err;
+            }
+        }
+        return query;
     }
 }
