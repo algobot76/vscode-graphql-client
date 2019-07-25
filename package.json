@@ -44,9 +44,11 @@
   "dependencies": {
     "@types/graphql": "^14.2.3",
     "@types/highlight.js": "^9.12.3",
+    "@types/lodash": "^4.14.136",
     "code-highlight-linenums": "^0.2.1",
-    "highlight.js": "^9.15.8",
     "graphql": "^14.4.2",
-    "graphql-request": "^1.8.2"
+    "graphql-request": "^1.8.2",
+    "highlight.js": "^9.15.8",
+    "lodash": "^4.17.15"
   }
 }
