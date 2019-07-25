@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
 import { getWebviewContent } from './utils/panel';
+import { getResponse } from './utils/request';
 
 import { Parser } from './parser';
 
@@ -35,11 +36,13 @@ export function activate(context: ExtensionContext) {
 			return;
 		}
 
-		let query;
+		// Get the request from text
+		let req;
 		try {
-			query = Parser.parse(selectedText);
+			req = Parser.parse(selectedText);
 		} catch (err) {
 			window.showErrorMessage(err.message);
+			return;
 		}
 
 		// Create a panel to display the response
@@ -49,27 +52,10 @@ export function activate(context: ExtensionContext) {
 			ViewColumn.Two
 		);
 
-		// for debug purpose only
-		let fakeResponse = {
-			"data": {
-				"hero": {
-					"name": "R2-D2",
-					"friends": [
-						{
-							"name": "Luke Skywalker"
-						},
-						{
-							"name": "Han Solo"
-						},
-						{
-							"name": "Leia Organa"
-						}
-					]
-				}
-			}
-		};
-
-		panel.webview.html = getWebviewContent(fakeResponse);
+		// Display response/error from endpoint
+		getResponse(req)
+			.then(res => panel.webview.html = getWebviewContent(res.data))
+			.catch(err => window.showErrorMessage(err.message));
 	});
 
 	context.subscriptions.push(disposable);
