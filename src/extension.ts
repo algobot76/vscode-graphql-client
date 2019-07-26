@@ -3,7 +3,8 @@
 import { commands, window, ExtensionContext, ViewColumn, Uri } from 'vscode';
 import { getWebviewContent } from './utils/panel';
 
-import { Parser } from './parser';
+import {Parser} from './parser';
+import { GraphqlRequest } from './models/GraphqlRequest';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -34,13 +35,19 @@ export function activate(context: ExtensionContext) {
 		if (selectedText === '') {
 			return;
 		}
-
-		let query;
+		
+        // defining the query as a GraphqlRequest
+		let queryRequest:GraphqlRequest;
 		try {
-			query = Parser.parse(selectedText);
+			queryRequest = Parser.parse(selectedText);
+			console.log(queryRequest);
+			// if this block does not go to catch block then we have a query 
+			// then we can call graphql request 
 		} catch (err) {
-			window.showErrorMessage(err.message);
+			console.log('AHHHHHHHHHHHHHH THERE WAS AN ERROR');
+			console.log(err.message);
 		}
+		// window.showInformationMessage(selectedText); // for debug purpose only
 
 		// Create a panel to display the response
 		let panel = window.createWebviewPanel(
