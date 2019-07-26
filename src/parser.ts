@@ -24,41 +24,46 @@ export class Parser {
         }
 
 
-        if (linesWithVariables.length === 1) {
-            // Get api from text
-            // Break text into multiple lines
-            let lines: string[] = text.split(EOL);
-            lines = lines.map(line => line.trim()).filter(line => line.length > 0);
-            console.log("Lines after filter: ", lines);
+        // Get api from text
+        // Break text into multiple lines
+        let lines: string[] = linesWithVariables[0].split(EOL);
+        lines = lines.map(line => line.trim()).filter(line => line.length > 0);
+        console.log("Lines after filter: ", lines);
 
         try {
             api = this.getApi(lines[0]);
-            } catch (err) {
-                throw new Error(err.message);
-            }
-            // Get Query from Text       
-            try {
-                query = this.getQuery(lines.slice(1));
-            } catch (err) {
-                throw new Error(err.message);
-            }
-            // requires those two parameters
-            return new GraphqlRequest(api, query);
-            // parer has returned a good request 
+        } catch (err) {
+            throw new Error(err.message);
+        }
+        // Get Query from Text       
+        try {
+            query = this.getQuery(lines.slice(1));
+        } catch (err) {
+            throw new Error(err.message);
         }
 
         if (linesWithVariables.length === 2) {
-        // Get Api from Text 
-           
-         
-        // Get Query     from Text 
-        // Get Variables from Text
-         
-        // requires three parameters
-        // parer has returned a good request 
-           
+            let variableLine: string[] = linesWithVariables[1].split(EOL);
+            variableLine = variableLine.map(line => line.trim()).filter(line => line.length > 0);
+            variables = this.getVariables(variableLine);
+            console.log (api);
+            console.log(query);
+            console.log(variables);
+
+            return new GraphqlRequest(api, query, variables);
         }
-    
+
+        else{
+            console.log(api);
+            console.log(query);
+            return new GraphqlRequest(api, query);
+
+        }
+
+
+
+
+
     }
 
     private static getApi(line: string): string {
@@ -107,13 +112,14 @@ export class Parser {
     }
 
     private static getVariables(lines: string[]): string {
-        // `query` has the format of `Graphql Query` and query has a variable obj
+        // string is pre-processed 
+        /// all we need is 
         if (lines.length === 0) {
             throw new Error('Query needs to be specified');
         }
 
-        //  pass it into the graphql parser to see if generates any errors
+        let variable = lines.join(EOL);
 
-        return 'a';
+        return JSON.parse(variable);
     }
 }
