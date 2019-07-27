@@ -5,6 +5,7 @@ import { Parser } from '../../parser';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import { assertScalarType } from 'graphql';
+import { format } from 'graphql-formatter';
 
 // import * as myExtension from '../extension';
 
@@ -34,14 +35,17 @@ suite('Extension Test Suite', () => {
 		}
 	  }
 	}`;
-		Query = Query.replace(/(\r\n|\n|\r)/gm, "");
+
 
 		let result = Parser.parse(simpleQuery);
-
 		let resultApi = result.api;
 		let resultQuery = result.query;
+
+		let expectQuery = format(Query);
+		let actualQuery = format(resultQuery);
+
 		assert.equal('POST test.url', resultApi);
-		//assert.equal(Query, resultQuery);
+		assert.equal(expectQuery, actualQuery);
 	});
 
 
@@ -68,9 +72,13 @@ suite('Extension Test Suite', () => {
 		}`;
 		let result = Parser.parse(queryWithVariables);
 		let variables = `{"episode": "JEDI","withFriends": false}`;
+
+		let expectQuery = format(Query);
+		let actualQuery = format(result.query);
+
 		assert.equal('POST test.url', result.api);
 
-		//  assert.equal(Query, result.query);
+		assert.equal(expectQuery, actualQuery);
 		let jsonVar = JSON.parse(variables);
 		let jsonString1 = JSON.stringify(jsonVar);
 		let jsonString2 = JSON.stringify(result.variables);
@@ -97,15 +105,41 @@ variables:
 	  "commentary": "This is a great movie!"
 	}
   }`;
-  
-  let result = Parser.parse(queryWithNestedVariables);
-  assert.equal('POST test.url',result.api);
+		let variables = `{
+	"ep": "JEDI",
+	"review": {
+	  "stars": 5,
+	  "commentary": "This is a great movie!"
+	}
+  }`;
+
+
+		let Query = `query Hero($episode: Episode, $withFriends: Boolean!) {
+	hero(episode: $episode) {
+	name
+	friends @include(if: $withFriends) {
+	  name
+	}
+  }
+}`;
+		let result = Parser.parse(queryWithNestedVariables);
+		assert.equal('POST test.url', result.api);
+		let expectQuery = format (Query);
+		let actualQuery = format (result.query);
+
+		let jsonVar = JSON.parse(variables);
+		let jsonString1 = JSON.stringify(jsonVar);
+		let jsonString2 = JSON.stringify(result.variables);
+		assert.equal(jsonString1, jsonString2);
+		assert.equal (expectQuery,actualQuery);
 	});
+
+
 
 });
 
 /*	let result = Parser.parse(queryWithNestedVariables);
-	
+
 		//	let resultApi = result.api;
 		//	let resultQuery = result.query;
 		//	let resultVariables = result.variables;
