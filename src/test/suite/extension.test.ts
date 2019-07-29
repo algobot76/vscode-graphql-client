@@ -135,6 +135,40 @@ variables:
 	});
 
 
+	test('simple query test', () => {
+		let request = `
+		POST test.url
+		{
+			hero {
+			  name
+			  # Queries can have comments!
+			  friends {
+				name
+			  }
+			}
+		  }`;
+
+		let query = `{
+			hero {
+			  name
+			  # Queries can have comments!
+			  friends {
+				name
+			  }
+			}
+		  }`;
+
+		let result = Parser.parse (request);
+		assert.equal ('POST test.url', result.api);
+		
+		let expectQuery = format (query);
+		let actualQuery = format (result.query);
+
+		assert.equal(expectQuery,actualQuery);
+		  
+
+	
+	});
 
 });
 
