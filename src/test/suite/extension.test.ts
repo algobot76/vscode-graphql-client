@@ -169,32 +169,43 @@ variables:
 
 	
 	});
+	
 
-});
 
-/*	let result = Parser.parse(queryWithNestedVariables);
 
-		//	let resultApi = result.api;
-		//	let resultQuery = result.query;
-		//	let resultVariables = result.variables;
-		let Query = `query Hero($episode: Episode, $withFriends: Boolean!) {
-			hero(episode: $episode) {
-			name
-			friends @include(if: $withFriends) {
+	test('test with arguements', () => {
+	 
+		let request = `
+		POST test.url
+		{
+			human(id: "1000") {
 			  name
+			  height(unit: FOOT)
 			}
 		  }
-		}`;
-		let variables = `{
-			"ep": "JEDI",
-			"review": {
-			  "stars": 5,
-			  "commentary": "This is a great movie!"
+		`;
+
+		let query = `
+		{
+			human(id: "1000") {
+			  name
+			  height(unit: FOOT)
 			}
-		  }`;
-		assert.equal('POST test.url', result.api);
-		let jsonVar = JSON.parse(variables);
-		let jsonString1 = JSON.stringify(jsonVar);
-		let jsonString2 = JSON.stringify(result.variables);
-		assert.equal(jsonString1, jsonString2);
-*/
+		  }
+		`;
+
+		let result = Parser.parse (request);
+		assert.equal ('POST test.url', result.api);
+		
+		let expectQuery = format (query);
+		let actualQuery = format (result.query);
+
+		assert.equal(expectQuery,actualQuery);
+
+
+	
+	});
+	
+	
+
+});
