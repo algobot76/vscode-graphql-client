@@ -5,6 +5,7 @@ import { getWebviewContent } from './utils/panel';
 import { getResponse } from './utils/request';
 
 import { Parser } from './parser';
+import { GraphqlRequest } from './models/GraphqlRequest';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -36,8 +37,8 @@ export function activate(context: ExtensionContext) {
 			return;
 		}
 
-		// Get the request from text
-		let req;
+		// Define the query/mutation as a GraphqlRequest
+		let req: GraphqlRequest;
 		try {
 			req = Parser.parse(selectedText);
 		} catch (err) {
