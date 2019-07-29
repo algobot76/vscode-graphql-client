@@ -43,7 +43,7 @@ suite('Extension Test Suite', () => {
 		let expectQuery = format(Query);
 		let actualQuery = format(resultQuery);
 
-		assert.equal('POST test.url', resultApi);
+		assert.equal('test.url', resultApi);
 		assert.equal(expectQuery, actualQuery);
 	});
 
@@ -75,7 +75,7 @@ suite('Extension Test Suite', () => {
 		let expectQuery = format(Query);
 		let actualQuery = format(result.query);
 
-		assert.equal('POST test.url', result.api);
+		assert.equal('test.url', result.api);
 
 		assert.equal(expectQuery, actualQuery);
 		let jsonVar = JSON.parse(variables);
@@ -122,7 +122,7 @@ variables:
   }
 }`;
 		let result = Parser.parse(queryWithNestedVariables);
-		assert.equal('POST test.url', result.api);
+		assert.equal('test.url', result.api);
 		let expectQuery = format(Query);
 		let actualQuery = format(result.query);
 
@@ -158,7 +158,7 @@ variables:
 		  }`;
 
 		let result = Parser.parse(request);
-		assert.equal('POST test.url', result.api);
+		assert.equal('test.url', result.api);
 
 		let expectQuery = format(query);
 		let actualQuery = format(result.query);
@@ -190,7 +190,7 @@ variables:
 		let result = Parser.parse(requestwithArugment);
 		// console.log(format(query));
 
-		assert.equal('POST test.url', result.api);
+		assert.equal('test.url', result.api);
 
 	});
 
@@ -219,7 +219,7 @@ query HeroNameAndFriends($episode: Episode = JEDI) {
 
 		let result = Parser.parse(queryRequest);
 
-		assert.equal('POST test.url', result.api);
+		assert.equal('test.url', result.api);
 		assert.equal(format(query), format(result.query));
 	});
 });

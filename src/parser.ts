@@ -58,7 +58,10 @@ export class Parser {
 
         let EntireAPILink = line.split('\n');
         let Link = EntireAPILink[0];
-        return Link;
+        let urlArray = Link.split("POST");
+        let newUrlLink = urlArray[1].trimLeft();
+        
+        return newUrlLink;
 
     }
 
