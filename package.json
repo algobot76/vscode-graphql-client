@@ -3,12 +3,30 @@
   "displayName": "GraphQL Client",
   "description": "GraphQL client for Visual Studio Code",
   "version": "0.0.1",
+  "author": {
+    "name": "Kaitian Xie",
+    "email": "xkaitian@gmail.com"
+  },
   "publisher": "algobot76",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algobot76/vscode-graphql-client"
+  },
+  "license": "MIT",
   "engines": {
     "vscode": "^1.36.0"
   },
   "categories": [
+    "Programming Languages",
+    "Snippets",
     "Other"
+  ],
+  "keywords": [
+    "http",
+    "keybindings",
+    "multi-root ready",
+    "graphql",
+    "snippet"
   ],
   "activationEvents": [
     "onCommand:graphql-client.request"
