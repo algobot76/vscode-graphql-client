@@ -1,1 +1,2 @@
 # vscode-graphql-client
+s
