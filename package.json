@@ -3,6 +3,7 @@
   "displayName": "vscode-graphql-client",
   "description": "GraphQL client for Visual Studio Code",
   "version": "0.0.1",
+  "publisher": "algobot76",
   "engines": {
     "vscode": "^1.36.0"
   },
