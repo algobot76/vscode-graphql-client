@@ -2,70 +2,41 @@ import { EOL } from 'os';
 import { GraphqlRequest } from './models/GraphqlRequest';
 import { GraphQLError } from 'graphql';
 import { parse as gqlParse } from 'graphql/language';
-import { VariablesAreInputTypes } from 'graphql/validation/rules/VariablesAreInputTypes';
 
 export class Parser {
     public static parse(text: String): GraphqlRequest {
-<<<<<<< HEAD
-        let linesWithVariables: string[] = text.split('variables:');
-=======
-       
-  
         let linesWithVariables: string[] = text.trim().split('variables:');
->>>>>>> newUnitTest
         let api;
         let query;
         let variables;
 
-<<<<<<< HEAD
-=======
-
-      //  console.log("Lines before filter", linesWithVariables);
-
->>>>>>> newUnitTest
         // Break text into multiple lines
         if (linesWithVariables.length === 0) {
             throw Error('Selected text cannot be empty');
         }
-
-        // Get api from text
-        // Break text into multiple lines
         let lines: string[] = linesWithVariables[0].split(EOL);
         lines = lines.map(line => line.trim()).filter(line => line.length > 0);
-       // console.log("Lines after filter: ", lines);
 
+        // Get api from text
         try {
             api = this.getApi(lines[0]);
         } catch (err) {
             throw new Error(err.message);
         }
+
         // Get Query from Text
         try {
-             
             query = this.getQuery(lines);
         } catch (err) {
             throw new Error(err.message);
         }
-
         if (linesWithVariables.length === 2) {
             let variableLine: string[] = linesWithVariables[1].split(EOL);
             variableLine = variableLine.map(line => line.trim()).filter(line => line.length > 0);
             variables = this.getVariables(variableLine);
-<<<<<<< HEAD
-            return new GraphqlRequest(api, query, variables);
-        } else {
-=======
-           // console.log (api);
-           // console.log(query);
-           // console.log(variables);
-
             return new GraphqlRequest(api, query, variables);
         }
-
-        else{
-            //console.log(api);
-           // console.log(query);
->>>>>>> newUnitTest
+        else {
             return new GraphqlRequest(api, query);
         }
     }
@@ -80,15 +51,15 @@ export class Parser {
         }
         let urlLink = line.slice(5);
         urlLink.trimLeft();
-        
+
         if (urlLink === '') {
             throw new Error('API must be specified');
         }
-        
+
         let EntireAPILink = line.split('\n');
         let Link = EntireAPILink[0];
         return Link;
-        
+
     }
 
     private static getQuery(lines: string[]): string {
@@ -98,27 +69,17 @@ export class Parser {
             throw new Error('Query must be specified');
         }
 
-        
         // Concatenate lines
         let query = lines.join(EOL);
-        let newQuery = query.split ('\n');
+        let newQuery = query.split('\n');
         let returnQuery = newQuery.slice(1);
-        let newReturnQuery= returnQuery.join(EOL);
+        let newReturnQuery = returnQuery.join(EOL);
         // Use builtin parser to parse query
         try {
-<<<<<<< HEAD
             // build in parser for graphql
             // it will validate the query
             // if there is an we will catch it
-            gqlParse(query);
-=======
-            // build in parser for graphql 
-            // it will validate the query 
-            // if there is an we will catch it  
              gqlParse(newReturnQuery);
->>>>>>> newUnitTest
-
-
         } catch (err) {
             // Be  A N G E R Y (perhaps depending on error type)
             if (err instanceof GraphQLError) {
@@ -127,14 +88,8 @@ export class Parser {
                 throw err;
             }
         }
-
-<<<<<<< HEAD
         // return query as a string
-        return query;
-=======
-        // return query as a string 
         return newReturnQuery;
->>>>>>> newUnitTest
     }
 
     private static getVariables(lines: string[]): string {
@@ -145,7 +100,6 @@ export class Parser {
         }
 
         let variable = lines.join(EOL);
-        
         return JSON.parse(variable);
     }
 }
