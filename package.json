@@ -1,6 +1,6 @@
 {
   "name": "vscode-graphql-client",
-  "displayName": "vscode-graphql-client",
+  "displayName": "GraphQL Client",
   "description": "GraphQL client for Visual Studio Code",
   "version": "0.0.1",
   "publisher": "algobot76",
