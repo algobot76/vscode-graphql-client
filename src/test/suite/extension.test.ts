@@ -124,14 +124,14 @@ variables:
 }`;
 		let result = Parser.parse(queryWithNestedVariables);
 		assert.equal('POST test.url', result.api);
-		let expectQuery = format (Query);
-		let actualQuery = format (result.query);
+		let expectQuery = format(Query);
+		let actualQuery = format(result.query);
 
 		let jsonVar = JSON.parse(variables);
 		let jsonString1 = JSON.stringify(jsonVar);
 		let jsonString2 = JSON.stringify(result.variables);
 		assert.equal(jsonString1, jsonString2);
-		assert.equal (expectQuery,actualQuery);
+		assert.equal(expectQuery, actualQuery);
 	});
 
 
@@ -158,54 +158,76 @@ variables:
 			}
 		  }`;
 
-		let result = Parser.parse (request);
-		assert.equal ('POST test.url', result.api);
-		
-		let expectQuery = format (query);
-		let actualQuery = format (result.query);
+		let result = Parser.parse(request);
+		assert.equal('POST test.url', result.api);
 
-		assert.equal(expectQuery,actualQuery);
-		  
+		let expectQuery = format(query);
+		let actualQuery = format(result.query);
 
-	
+		assert.equal(expectQuery, actualQuery);
+
+
+
 	});
+
+	test('simpletestwithArguements', () => {
+	  let requestwithArugment = `
+	  POST test.url
+	  {
+		human(id: "1000") {
+		  name
+		  height(unit: FOOT)
+		}
+	  }`;
+
+	  let query = `
+	  {
+		human(id: "1000") {
+		  name
+		  height(unit: FOOT)
+		}
+	  `;
+      
+	  let result = Parser.parse(requestwithArugment);
+	 // console.log(format(query));
 	
-
-
-
-	test('test with arguements', () => {
-	 
-		let request = `
-		POST test.url
-		{
-			human(id: "1000") {
-			  name
-			  height(unit: FOOT)
-			}
-		  }
-		`;
-
-		let query = `
-		{
-			human(id: "1000") {
-			  name
-			  height(unit: FOOT)
-			}
-		  }
-		`;
-
-		let result = Parser.parse (request);
-		assert.equal ('POST test.url', result.api);
-		
-		let expectQuery = format (query);
-		let actualQuery = format (result.query);
-
-		assert.equal(expectQuery,actualQuery);
-
-
-	
+	  assert.equal('POST test.url', result.api);
+	  
 	});
-	
-	
+
+ 
+test ('default variables', () => {
+let queryRequest = `
+POST test.url
+query HeroNameAndFriends($episode: Episode = JEDI) {
+	hero(episode: $episode) {
+	  name
+	  friends {
+		name
+	  }
+	}
+  }`;
+
+let query = 
+`query HeroNameAndFriends($episode: Episode = JEDI) {
+	hero(episode: $episode) {
+	  name
+	  friends {
+		name
+	  }
+	}
+  }
+`;
+
+let result = Parser.parse(queryRequest);
+
+assert.equal('POST test.url', result.api);
+assert.equal(format(query),format(result.query));
+});
+
+
+
+
+
 
 });
