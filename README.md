@@ -36,3 +36,9 @@ _Note_: the content of the `variables` must be written in JSON format.
 ## Install
 
 Press `F1`, type `ext install` then search for `graphql client`.
+
+## Troubleshooting
+
+For Windows users, please switch your end of line sequence from `CRLF` to `LF`, otherwise the extension may not work properly. The end of line sequence can be changed via the option at the bottom right of VSCode.
+
+![eol](eol.png)
