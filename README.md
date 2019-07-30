@@ -33,6 +33,8 @@ variables : {
 
 _Note_: the content of the `variables` must be written in JSON format.
 
+If you still don't know how to use this extension, go watch this [video](https://youtu.be/uk1CxM0GbeM).
+
 ## Install
 
 Press `F1`, type `ext install` then search for `graphql client`.
