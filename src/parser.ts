@@ -1,7 +1,8 @@
 import {
     GraphqlRequest,
     HeaderObject,
-    VariablesObject
+    VariablesObject,
+    APIObject
 } from './models/GraphqlRequest';
 import { parse as gqlParse } from 'graphql/language';
 import { EOL } from 'os';
@@ -14,8 +15,8 @@ export class Parser {
 
         let [head, query, tmpVars] = text.trim().split(EOL + EOL);
 
-        let [api, ...tmpHeader] = head.trim().split(EOL);
-        this.validateAPI(api);
+        let [tmpApi, ...tmpHeader] = head.trim().split(EOL);
+        const api = this.getAPI(tmpApi);
         const header = this.parseHeader(tmpHeader);
         this.validateQuery(query);
         const variables = this.getVariables(tmpVars);
@@ -23,18 +24,20 @@ export class Parser {
         return new GraphqlRequest(api, header, query, variables);
     }
 
-    private static validateAPI(api: string): void {
+    private static getAPI(api: string): APIObject {
         // api should start with a GET or POST request method
         // followed by a space
         let [method, url] = api.split(' ');
+        method = method.trim().toUpperCase();
 
-        if (!['GET', 'POST'].includes(method.toUpperCase())) {
+        if (!['GET', 'POST'].includes(method)) {
             throw new Error('Invalid request method');
         }
 
         if (url.trim().length === 0) {
             throw new Error('No endpoint url');
         }
+        return { method, url };
     }
 
     private static parseHeader(header: string[]): HeaderObject {
@@ -59,7 +62,7 @@ export class Parser {
     }
 
     private static getVariables(tmpVars: string): VariablesObject {
-        if (tmpVars.trim().length === 0) return {};
+        if (!tmpVars || tmpVars.trim().length === 0) return {};
         if (!tmpVars.match(/^ *variables *:/)) {
             throw new Error('Invalid variables syntax');
         }

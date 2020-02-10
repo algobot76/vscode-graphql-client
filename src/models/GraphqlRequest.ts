@@ -1,9 +1,9 @@
 export class GraphqlRequest {
     constructor(
-        readonly api: string,
-        readonly header: HeaderObject,
-        readonly query: string,
-        readonly variables: VariablesObject
+        public api: APIObject,
+        public header: HeaderObject,
+        public query: string,
+        public variables: VariablesObject
     ) {}
 }
 
@@ -13,4 +13,9 @@ export interface HeaderObject {
 
 export interface VariablesObject {
     [key: string]: string;
+}
+
+export interface APIObject {
+    method: string;
+    url: string;
 }
