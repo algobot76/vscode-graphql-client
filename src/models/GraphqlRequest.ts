@@ -1,11 +1,16 @@
 export class GraphqlRequest {
-    api: string;
-    query: string;
-    variables: any;
+    constructor(
+        readonly api: string,
+        readonly header: HeaderObject,
+        readonly query: string,
+        readonly variables: VariablesObject
+    ) {}
+}
 
-    constructor(api: string, query: string, variables = {}) {
-        this.api = api;
-        this.query = query;
-        this.variables = variables;
-    }
+export interface HeaderObject {
+    [key: string]: string;
+}
+
+export interface VariablesObject {
+    [key: string]: string;
 }
